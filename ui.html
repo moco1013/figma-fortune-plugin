@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>デザインおみくじ</title>
+  <style>
+    /* ページ全体のスタイル */
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f9f9f9;
+      color: #333;
+      margin: 0;
+      padding: 20px;
+    }
+
+    /* 占い結果表示エリア */
+    .fortune {
+      margin: 20px 0;
+      padding: 20px;
+      border-radius: 8px;
+      background-color: #ffffff;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .title {
+        font-size: 20px;
+    }
+
+    /* 色を示すサークル */
+    .color-circle {
+      width: 50px;
+      height: 50px;
+      margin: 10px auto;
+      border-radius: 50%;
+      border: 2px solid #ddd;
+    }
+
+    /* 占いボタン */
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #0078D7;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #005fa3;
+    }
+  </style>
+</head>
+<body>
+  <h1 class="title">デザインおみくじ🔮</h1>
+  <div class="fortune" id="fortune">
+    <p>難しくも面白いデザインの世界。<br>今日のデザイン運を占ってみましょう！</p>
+  </div>
+  <button id="get-fortune">占う</button>
+
+  <script>
+    const button = document.getElementById("get-fortune");
+    const fortuneDiv = document.getElementById("fortune");
+
+    button.onclick = () => {
+      parent.postMessage({ pluginMessage: { type: "get-fortune" } }, "*");
+    };
+
+    window.onmessage = (event) => {
+      const fortune = event.data.pluginMessage;
+      if (fortune) {
+        fortuneDiv.innerHTML = `
+          <h2>${fortune.title}</h2>
+          <p>${fortune.message}</p>
+          <div class="color-circle" style="background-color: ${fortune.color};"></div>
+        `;
+      }
+    };
+  </script>
+</body>
+</html>
